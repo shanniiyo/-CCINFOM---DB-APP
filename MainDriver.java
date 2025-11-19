@@ -48,7 +48,7 @@ public class MainDriver {
                     new ProductReturnDAO().getFullReturnReport();
                     break;
                 case 7:
-                    SupplierReport().generateReport();
+                    SupplierReport.generateReport();
                     break;
                 case 0:
                     System.out.println("Exiting application...");
