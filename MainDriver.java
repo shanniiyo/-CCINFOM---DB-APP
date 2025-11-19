@@ -197,7 +197,7 @@ public class MainDriver {
         // Implementation for delivery, fetching Product, Client, Staff from DB
         System.out.println("Enter Product ID: ");
         int productID = getIntInput();
-        Product product = InventoryDAO.getProductByID(productID)
+        Product product = InventoryDAO.getProductByID(productID);
 
             if(product == null){
                 System.out.println("Product not found.");
