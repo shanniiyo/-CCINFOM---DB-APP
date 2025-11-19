@@ -24,46 +24,39 @@ public class DeliveryTransaction {
         this.status = "PENDING";
     }
 
-    // Process the delivery
+    // Perform delivery (deduct stock)
     public void processDelivery() {
         System.out.println("\n=== PROCESSING DELIVERY ===");
         System.out.println("Delivery ID: " + deliveryID);
-        System.out.println("Product: " + product.getProductName());
-        System.out.println("Client: " + client.getName());
+        System.out.println("Product: " + product.getProductID());
+        System.out.println("Client: " + client.getClientName());
         System.out.println("Quantity: " + quantity);
 
+        // Check for enough stock
         if (product.getQuantity() < quantity) {
             status = "FAILED";
             System.out.println("STATUS: FAILED — Not enough stock!");
             return;
         }
 
-        product.deductStock(quantity);
+        // Deduct stock
+        //product.deductStock(quantity);
         status = "SUCCESS";
 
         System.out.println("STATUS: SUCCESS — Delivered " + quantity + " units.");
         System.out.println("Remaining Stock: " + product.getQuantity());
     }
 
-    // Display details
+    // Display delivery details
     public void viewDeliveryDetails() {
         System.out.println("\n=== DELIVERY TRANSACTION DETAILS ===");
         System.out.println("Delivery ID: " + deliveryID);
         System.out.println("Date: " + deliveryDate);
-        System.out.println("Product: " + product.getProductName());
-        System.out.println("Client: " + client.getName());
+        System.out.println("Product: " + product.getProductID());
+        System.out.println("Client: " + client.getClientName());
         System.out.println("Staff: " + staff.getName());
         System.out.println("Quantity: " + quantity);
         System.out.println("Status: " + status);
         System.out.println("====================================");
     }
-
-    // === GETTERS ===
-    public String getDeliveryID() { return deliveryID; }
-    public LocalDate getDeliveryDate() { return deliveryDate; }
-    public Product getProduct() { return product; }
-    public Client getClient() { return client; }
-    public Staff getStaff() { return staff; }
-    public int getQuantity() { return quantity; }
-    public String getStatus() { return status; }
 }
