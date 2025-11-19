@@ -23,6 +23,14 @@ public class DeliveryTransaction {
         this.quantity = quantity;
         this.status = "PENDING";
     }
+    //added
+    public String getDeliveryID() { return deliveryID; }
+    public LocalDate getDeliveryDate() { return deliveryDate; }
+    public Product getProduct() { return product; }
+    public Client getClient() { return client; }
+    public Staff getStaff() { return staff; }
+    public int getQuantity() { return quantity; }
+    public String getStatus() { return status; }
 
     // Perform delivery (deduct stock)
     public void processDelivery() {
