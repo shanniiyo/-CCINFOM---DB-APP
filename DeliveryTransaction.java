@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class DeliveryTransaction {
+public class deliveryTransaction {
 
     private String deliveryID;
     private LocalDate deliveryDate;
