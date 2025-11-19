@@ -9,6 +9,7 @@ public class Product {
             // price DOUBLE
             // dateAdded DATE
             // expiration DATE
+            // lowStockLimit INT
 
     private int productID;
     private String brand;
@@ -16,15 +17,18 @@ public class Product {
     private double price;
     private LocalDate dateAdded;
     private LocalDate ExpirationDate;
+    private int lowStockLimit;
 
-    public Product(int productID, String brand, int quantity, double price, LocalDate dateAdded, LocalDate ExpirationDate) {
+    public Product(int productID, String brand, int quantity, double price, LocalDate dateAdded, LocalDate ExpirationDate, int lowStockLimit) {
         this.productID = productID;
         this.brand = brand;
         this.quantity = quantity;
         this.price = price;
         this.dateAdded = dateAdded;
         this.ExpirationDate = ExpirationDate;
+        this.lowStockLimit = lowStockLimit;
     }
+
 
     // === GETTERS AND SETTERS ===
     public int getProductID() 
@@ -39,6 +43,8 @@ public class Product {
         { return dateAdded; }
     public LocalDate getExpirationDate() 
         { return ExpirationDate; }
+    public int getLowStockLimit()
+        { return lowStockLimit; }
 
     public void setQuantity(int quantity) 
         { this.quantity = quantity; }
@@ -48,7 +54,7 @@ public class Product {
     // === BUSINESS METHODS ===
 
     public boolean isLowStock() {
-        return quantity < 10;   // or any threshold
+        return quantity <= lowStockLimit;   // Use the dynamic threshold
     }
    public void viewStockLevels() {
         System.out.println("=== Stock Information ===");
