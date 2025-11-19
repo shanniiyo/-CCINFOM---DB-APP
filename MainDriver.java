@@ -50,6 +50,9 @@ public class MainDriver {
                 case 7:
                     SupplierReport.generateReport();
                     break;
+                case 8:
+                    InventoryReport.generateReport();
+                    break;
                 case 0:
                     System.out.println("Exiting application...");
                     running = false;
@@ -72,6 +75,7 @@ public class MainDriver {
         System.out.println("[5] Product Return");
         System.out.println("[6] Generate Return Report");
         System.out.println("[7] Generate Supplier Order Report");
+        System.out.println("[8] Generate Detailed Inventory Report");
         System.out.println("[0] Exit");
         System.out.println("============================");
     }
@@ -107,10 +111,26 @@ public class MainDriver {
             System.out.println("No products found.");
             return;
         }
+
+        // Table Header
+        String header = String.format("| %-5s | %-45s | %-10s | %-10s | %-12s | %-15s |",
+                "ID", "Brand", "Quantity", "Price", "Date Added", "Expiration Date");
+        System.out.println(new String(new char[header.length()]).replace('\0', '-'));
+        System.out.println(header);
+        System.out.println(new String(new char[header.length()]).replace('\0', '-'));
+
+        // Table Rows
         for (Product product : products) {
-            product.viewStockLevels();
-            System.out.println("------------------------------");
+            String row = String.format("| %-5d | %-45s | %-10d | %-10.2f | %-12s | %-15s |",
+                    product.getProductID(),
+                    product.getBrand(),
+                    product.getQuantity(),
+                    product.getPrice(),
+                    product.getDateAdded(),
+                    product.getExpirationDate());
+            System.out.println(row);
         }
+        System.out.println(new String(new char[header.length()]).replace('\0', '-'));
     }
 
     private static void addNewProduct() {
@@ -123,10 +143,12 @@ public class MainDriver {
         int qty = getIntInput();
         System.out.print("Enter Price: ");
         double price = getDoubleInput();
+        System.out.print("Enter Low Stock Threshold: ");
+        int lowStockLimit = getIntInput();
         System.out.print("Enter Expiration Date (YYYY-MM-DD): ");
         LocalDate ExpirationDate = LocalDate.parse(getStringInput());
 
-        Product newProduct = new Product(id, brand, qty, price, LocalDate.now(), ExpirationDate);
+        Product newProduct = new Product(id, brand, qty, price, LocalDate.now(), ExpirationDate, lowStockLimit);
         InventoryDAO.addProduct(newProduct);
     }
 
@@ -142,7 +164,7 @@ public class MainDriver {
 
         System.out.print("Enter Supplier ID: ");
         int supplierID = getIntInput();
-        Supplier supplier = SupplierDAO.getSupplierByID(supplierID); // Assumes SupplierDAO exists
+        Supplier supplier = SupplierDAO.getSupplierByID(supplierID); 
         if (supplier == null) {
             System.out.println("Supplier not found.");
             return;
