@@ -47,6 +47,9 @@ public class MainDriver {
                     // This assumes a getFullReturnReport method exists in ProductReturnDAO
                     new ProductReturnDAO().getFullReturnReport();
                     break;
+                case 7:
+                    SupplierReport().generateReport();
+                    break;
                 case 0:
                     System.out.println("Exiting application...");
                     running = false;
@@ -68,6 +71,7 @@ public class MainDriver {
         System.out.println("[4] Delivery Transaction");
         System.out.println("[5] Product Return");
         System.out.println("[6] Generate Return Report");
+        System.out.println("[7] Generate Supplier Order Report");
         System.out.println("[0] Exit");
         System.out.println("============================");
     }
