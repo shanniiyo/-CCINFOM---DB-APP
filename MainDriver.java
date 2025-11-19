@@ -195,7 +195,59 @@ public class MainDriver {
     private static void handleDelivery() {
         System.out.println("\n=== DELIVERY TRANSACTION ===");
         // Implementation for delivery, fetching Product, Client, Staff from DB
-        System.out.println("Delivery handling is not fully implemented yet.");
+        System.out.println("Enter Product ID: ");
+        int productID = getIntInput();
+        Product product = InventoryDAO.getProductByID(productID)
+
+            if(product == null){
+                System.out.println("Product not found.");
+            return;
+        }
+        System.out.print("Enter Client ID: ");//client input
+        int clientID = getIntInput();
+        Client client = ClientDAO.getClientByID(clientID);
+
+        if (client == null) {
+            System.out.println("Client not found.");
+            return;
+        }
+        // Input Staff
+        System.out.print("Enter Staff ID: ");
+        int staffID = getIntInput();
+        Staff staff = StaffDAO.getStaffByID(staffID);
+
+        if (staff == null) {
+            System.out.println("Staff not found.");
+            return;
+        }
+
+        // Input Quantity
+        System.out.print("Enter Quantity to Deliver: ");
+        int quantity = getIntInput();
+
+        // Generate Delivery ID
+        String deliveryID = "DEL-" + System.currentTimeMillis();
+
+        // Create DeliveryTransaction object
+        DeliveryTransaction delivery = new DeliveryTransaction(
+            deliveryID,
+            LocalDate.now(),
+            product,
+            client,
+            staff,
+            quantity
+        );
+
+        // Process Delivery
+        delivery.processDelivery();
+
+        // Update product stock in the database if successful
+        if (delivery.getStatus().equals("SUCCESS")) {
+            InventoryDAO.updateProductStock(product);
+        }
+
+        // Show final details
+        delivery.viewDeliveryDetails();
     }
 
     private static void handleProductReturn() {
