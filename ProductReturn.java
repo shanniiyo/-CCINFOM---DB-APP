@@ -11,6 +11,9 @@ public class ProductReturn {
     private String reason;
     private int quantity;
     private LocalDate purchaseDate;
+    //Added
+    private double refundAmount;
+    private LocalDate refundDate;
 
     public ProductReturn(String returnID, LocalDate transactionDate,
                          Product product, Client client, Staff staff,
@@ -24,6 +27,8 @@ public class ProductReturn {
         this.reason = reason;
         this.quantity = quantity;
         this.purchaseDate = purchaseDate;
+        this.refundAmount = 0.0 //Added
+        this.refundDate = transactionDate;//Added
     }
 
     // VALIDATE RETURN
@@ -81,4 +86,16 @@ public class ProductReturn {
     public int getQuantity() { return quantity; }
     public Product getProduct() { return product; }
     public Client getClient() { return client; }
+
+    public double getRefundAmount() {return refundAmount;}//Added
+    public LocalDate getRefundDate() {return refunDate;}//Added
+
+    public void setRefundAmount(double refundAmount){ //Added
+        this.refundDate = refundDate;
+    }
+
+    public void setRefundDate(LocalDate refundDate){ //Added
+        this.refundDate = refundDate;
+    }
+    
 }
