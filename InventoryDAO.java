@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +12,7 @@ public class InventoryDAO {
     // ADD PRODUCT
     // =====================================================
     public static void addProduct(Product product) {
-        String sql = "INSERT INTO Product (ProductID, Brand, Quantity, Price, DateAdded, ExpirationDate) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Product (ProductID, Brand, Quantity, Price, DateAdded, ExpirationDate, LowStockLimit) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -21,8 +21,9 @@ public class InventoryDAO {
             stmt.setString(2, product.getBrand());
             stmt.setInt(3, product.getQuantity());
             stmt.setDouble(4, product.getPrice());
-            stmt.setDate(5, java.sql.Date.valueOf(product.getDateAdded()));
-            stmt.setDate(6, java.sql.Date.valueOf(product.getExpirationDate()));
+            stmt.setObject(5, product.getDateAdded());
+            stmt.setObject(6, product.getExpirationDate());
+            stmt.setInt(7, product.getLowStockLimit());
 
             stmt.executeUpdate();
             System.out.println("Product added successfully.");
@@ -52,7 +53,8 @@ public class InventoryDAO {
                     rs.getInt("Quantity"),
                     rs.getDouble("Price"),
                     rs.getDate("DateAdded").toLocalDate(),
-                    rs.getDate("ExpirationDate").toLocalDate()
+                    rs.getDate("ExpirationDate").toLocalDate(),
+                    rs.getInt("LowStockLimit")
                 );
             }
 
@@ -146,17 +148,18 @@ public class InventoryDAO {
         String sql = "SELECT * FROM Product";
 
         try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()) {
+             while (rs.next()) {
                 Product product = new Product(
                     rs.getInt("ProductID"),
                     rs.getString("Brand"),
                     rs.getInt("Quantity"),
                     rs.getDouble("Price"),
                     rs.getDate("DateAdded").toLocalDate(),
-                    rs.getDate("ExpirationDate").toLocalDate()
+                    rs.getDate("ExpirationDate").toLocalDate(),
+                    rs.getInt("LowStockLimit")
                 );
                 products.add(product);
             }
